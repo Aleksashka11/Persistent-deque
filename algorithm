@@ -1,0 +1,82 @@
+#include <iostream>
+
+using namespace std;
+
+template < typename T > class Container{
+public:
+    T val;
+    Container(){}
+    Container(T _val){
+        val = _val;
+    }
+};
+
+template < typename T > class Deque{
+public:
+    Container<T>* head;
+    Container<T>* tail;
+    Deque< pair<T, T> > *child;
+    Deque<T>(){}
+    Deque<T>(Container<T>* _head, Deque< pair<T, T> > *_child, Container<T>* _tail){
+        head = _head;
+        child = _child;
+        tail = _tail;
+    }
+    Deque<T>* push_front(T x){
+        if (this == NULL){
+            return new Deque<T>(new Container<T>(x), NULL, NULL);
+        }
+        if (head == NULL){
+            return new Deque<T>(new Container<T>(x), child, tail);
+        }
+        else{
+            return new Deque<T>(NULL, child->push_front(make_pair(x, head->val)), tail);
+        }
+    }
+    Deque<T>* pop_front (Deque<T>){
+        if (this == NULL){
+            return NULL, NULL;
+        }
+        if (head == NULL){
+            if (child == NULL && tail == NULL){
+                return head, NULL;
+            }
+            else{
+                return head, new Deque<T>(NULL, child, tail);
+            }
+        }
+        if (child == NULL && head == NULL){
+            return tail, NULL;
+        }
+        
+    }
+    
+    Deque<T>* push_back(T x){
+        if (this == NULL){
+            return new Deque<T>(NULL, NULL, new Container<T>(x));
+        }
+        if (tail == NULL){
+            return new Deque<T>(head, child, new Container<T>(x));
+        }
+        else{
+            return new Deque<T>(head, child->push_front(make_pair(x, tail->val)), NULL);
+        }
+    }
+    
+    Deque<T>* pop_back (Deque<T>){
+        if (this == NULL){
+            return NULL, NULL;
+        }
+        if (tail == NULL){
+            if (child == NULL && head == NULL){
+                return NULL, tail;
+            }
+            else{
+                return tail, new Deque<T>(head, child, NULL)
+            }
+        }
+        if (child == NULL && tail == NULL){
+            return head, NULL;
+        }
+    }
+};
