@@ -1,0 +1,3246 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Persistent Deque</title>
+  <meta charset="utf-8">
+  <style>
+
+
+  * {
+      box-sizing: border-box;
+  }
+
+  /* Style the body */
+  body {
+      font-family: Arial;
+      margin: 0;
+  }
+
+  /* Header/logo Title */
+  .header {
+      padding: 80px;
+      height: 30px;
+      text-align: center;
+      background: #1abc9c;
+      color: white;
+  }
+
+  /* Increase the font size of the heading */
+  .header h1 {
+      font-size: 40px;
+  }
+
+  /* Style the top navigation bar */
+  .navbar {
+      overflow: hidden;
+      background-color: #333;
+      height: 50px;
+  }
+
+  /* Style the navigation bar links */
+  .navbar a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+  }
+
+  /* Right-aligned link */
+  .navbar a.right {
+      float: right;
+  }
+
+  /* Change color on hover */
+  .navbar a:hover {
+      background-color: #ddd;
+      color: black;
+  }
+
+  /* Column container */
+  .row {
+      display: -ms-flexbox; /* IE10 */
+      display: flex;
+      -ms-flex-wrap: wrap; /* IE10 */
+      flex-wrap: wrap;
+  }
+
+  /* Create two unequal columns that sits next to each other */
+  /* Sidebar/left column */
+  .side {
+      -ms-flex: 30%; /* IE10 */
+      flex: 30%;
+      background-color: #f1f1f1;
+      padding: 20px;
+  }
+
+  /* Main column */
+  .main {
+      -ms-flex: 70%; /* IE10 */
+      flex: 70%;
+      background-color: white;
+      padding: 20px;
+  }
+
+  .round {
+    border-radius: 100px; /* Радиус скругления */
+    border: 3px solid green; /* Параметры рамки */
+    box-shadow: 0 0 7px #666; /* Параметры тени */
+   }
+
+
+    svg #shape {
+   	 fill: none;
+   	 stroke: black;
+   	 stroke-width: 2;
+   	 transition: all 4s ease-in-out;
+   }
+
+   svg #shape2 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape3 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape4 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+   svg #shape5 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape6 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape7 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+   svg #shape8 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape9 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape10 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape11 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+   svg #shape12 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape13 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape14 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #shape15 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+   svg #shape16 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+   svg #shape17 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line2 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line3 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line4 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line5 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line6 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line7 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line8 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line9 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line10 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line11 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line12 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line13 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line14 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line15 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line16 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line17 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line18 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line19 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line20 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line21 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line22 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line23 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line24 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line25 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #line26 {
+    fill: none;
+    stroke: black;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #front1 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: green;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #front2 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: green;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #front3 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: green;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #rear1 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: red;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #rear2 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: red;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+   svg #rear3 {
+    font: italic 23px serif;
+    fill: none;
+    stroke: red;
+    stroke-width: 2;
+    transition: all 4s ease-in-out;
+   }
+
+
+
+
+
+
+
+   </style>
+ </head>
+ <body>
+
+   <div class="header">
+     <h1 style="margin-top: -20px">Персистентный дек</h1>
+   </div>
+
+   <div class="navbar">
+        <input type="text2" name="kye2" size="20" maxlength="50" style="margin-top: 15px; margin-left: 900px;" id="number2"/>
+        <input value="Built" type="button" onclick="built()">
+   </div>
+
+
+   <svg style="width: 1000px; height: 1000px; background: transparent;">
+   <text id="text1" x="520" y="235"></text> //текст для круга слева 2й уровень
+   <text id="text2" x="622" y="235"></text> //текст для круга справа 2й уровень
+   <text id="text3" x="502" y="385"></text> //текст для круга слева 3й уровень
+   <text id="text4" x="442" y="385"></text> //текст для круга слева 3й уровень
+   <text id="text5" x="642" y="385"></text> //текст для круга справа 3й уровень
+   <text id="text6" x="702" y="385"></text> //текст для круга слева 3й уровень
+   <text id="text7" x="322" y="535"></text> //текст для круга слева 4й уровень
+   <text id="text8" x="382" y="535"></text> //текст для круга слева 4й уровень
+   <text id="text9" x="442" y="535"></text> //текст для круга слева 4й уровень
+   <text id="text10" x="502" y="535"></text> //текст для круга слева 4й уровень
+   <text id="text11" x="642" y="535"></text> //текст для круга справа 4й уровень
+   <text id="text12" x="702" y="535"></text> //текст для круга справа 4й уровень
+   <text id="text13" x="762" y="535"></text> //текст для круга справа 4й уровень
+   <text id="text14" x="822" y="535"></text> //текст для круга справа 4й уровень
+   <text id="front1" x="480" y="200"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 2й уровень
+   <text id="front2" x="380" y="350"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 3й уровень
+    <text id="front3" x="280" y="500"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 4й уровень
+   <text id="rear1" x="630" y="200"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 2й уровень
+   <text id="rear2" x="730" y="350"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 3й уровень
+   <text id="rear3" x="830" y="500"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 4й уровень
+   <circle id='shape2' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(480 350)"/> //круг слева на 3м уровне
+   <circle id='shape3' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(420 350)"/> //круг слева на 3м уровне
+   <circle id='shape4' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(420 500)"/> //круг слева на 4м уровне
+   <circle id='shape5' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(480 500)"/> //круг слева на 4м уровне
+   <circle id='shape6' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(360 500)"/> //круг слева на 4м уровне
+   <circle id='shape7' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(300 500)"/> //круг слева на 4м уровне
+   <circle id='shape8' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(620 350)"/> //круг справа на 3м уровне
+   <circle id='shape9' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(680 350)"/> //круг справа на 3м уровне
+   <circle id='shape10' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(620 500)"/> //круг справа на 4м уровне
+   <circle id='shape11' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(680 500)"/> //круг справа на 4м уровне
+   <circle id='shape12' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(740 500)"/> //круг справа на 4м уровне
+   <circle id='shape13' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(800 500)"/> // круг справа на 4м уровне
+   <circle id='shape14' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(500 200)"/> // круг слева на 2м уровне
+   <circle id='shape15' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(600 200)"/> //круг справа на 2м уровне
+   <circle id='shape' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 50)"/> //круг посерединке 1-й
+   <circle id='shape16' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 280)"/> //круг посерединке 2-й
+   <circle id='shape17' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 430)"/> //круг посерединке 3-й
+   <line id="line"  x2="530" y2="200" x1="570" y1="110" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> // линия
+   <line id="line2" x1="590" y1="110" x2="620" y2="200" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+   <line id="line3" x1="580" y1="110" x2="580" y2="280" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line11" x1="580" y1="340" x2="580" y2="430" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+   <line id="line5" x1="550" y1="320" x2="490" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+   <line id="line6" x1="490" y1="330" x2="470" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line7" x1="490" y1="330" x2="510" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line8" x1="610" y1="320" x2="680" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+   <line id="line9" x1="680" y1="330" x2="660" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+   <line id="line10" x1="680" y1="330" x2="700" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line12" x1="550" y1="470" x2="440" y2="480" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line13" x1="440" y1="480" x2="340" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line14" x1="440" y1="480" x2="410" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line15" x1="440" y1="480" x2="460" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line16" x1="440" y1="480" x2="510" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line17" x1="610" y1="470" x2="730" y2="480" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line18" x1="730" y1="480" x2="820" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line19" x1="730" y1="480" x2="750" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line20" x1="730" y1="480" x2="710" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line21" x1="730" y1="480" x2="660" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+   <line id="line4" x1="595" y1="290" x2="560" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //дополнительная зачеркнутая линия для второго круга
+   <line id="line22" x1="645" y1="210" x2="610" y2="250" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 2м уровне
+   <line id="line23" x1="545" y1="210" x2="510" y2="250" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга слева на 2м уровне
+   <line id="line24" x1="725" y1="360" x2="690" y2="400" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 3м уровне
+   <line id="line25" x1="465" y1="360" x2="430" y2="400" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга слева на 3м уровне
+   <line id="line26" x1="845" y1="510" x2="810" y2="550" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 3м уровне
+ </svg>
+
+
+
+
+
+
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+
+  <script>
+
+
+
+
+    var arr3 = [];
+    function built(){
+      var e = document.getElementById('number2').value;
+      var arr3 = e.split(' ');
+
+      if (arr3.length == 1){  //добавить зачеркнутую штучку для круга справа
+
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line4 = document.getElementById('line4');
+        setTimeout(function () {
+          line4.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+      }
+      if (arr3.length == 2){
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line4 = document.getElementById('line4');
+        setTimeout(function () {
+          line4.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+
+        setTimeout(function () {
+          var input_taker2 = arr3[1];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 10000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+      }
+
+
+
+      if (arr3.length == 3){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        var line23 = document.getElementById('line23');
+        setTimeout(function () {
+          line23.setAttribute('stroke-dashoffset', 0);
+        }, 3000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        setTimeout(function () {
+          var input_taker = arr3[2];
+          document.getElementById('text2').innerHTML = input_taker;
+        }, 8000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[1];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 16000);
+
+        var shape3 = document.getElementById('shape3');
+        shape3.style.stroke = 'green';
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[0];
+          document.getElementById('text4').innerHTML = input_taker2;
+        }, 14000);
+
+        var front2 = document.getElementById('front2');
+        setTimeout(function () {
+          front2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line24 = document.getElementById('line24');
+        setTimeout(function () {
+          line24.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+
+      }
+      if (arr3.length == 4){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        var line23 = document.getElementById('line23');
+        setTimeout(function () {
+          line23.setAttribute('stroke-dashoffset', 0);
+        }, 3000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker = arr3[1];
+          document.getElementById('text3').innerHTML = input_taker;
+        }, 16000);
+
+        var shape3 = document.getElementById('shape3');
+        shape3.style.stroke = 'green';
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[0];
+          document.getElementById('text4').innerHTML = input_taker2;
+        }, 13000);
+
+        var front2 = document.getElementById('front2');
+        setTimeout(function () {
+          front2.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[2];
+          document.getElementById('text5').innerHTML = input_taker3;
+        }, 21000);
+
+        var shape9 = document.getElementById('shape9');
+        shape9.style.stroke = 'red';
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+
+        setTimeout(function () {
+          var input_taker4 = arr3[3];
+          document.getElementById('text6').innerHTML = input_taker4;
+        }, 23000);
+
+        var rear2 = document.getElementById('rear2');
+        setTimeout(function () {
+          rear2.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+      }
+
+      if (arr3.length == 5){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker;
+        }, 16000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker2;
+        }, 14000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[3];
+          document.getElementById('text5').innerHTML = input_taker3;
+        }, 21000);
+
+        var shape9 = document.getElementById('shape9');
+        shape9.style.stroke = 'red';
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[4];
+          document.getElementById('text6').innerHTML = input_taker4;
+        }, 23000);
+
+        var rear2 = document.getElementById('rear2');
+        setTimeout(function () {
+          rear2.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+      }
+
+      if (arr3.length == 6){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[5];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 9000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        setTimeout(function () {
+          var input_taker = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker;
+        }, 17000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker2;
+        }, 15000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[3];
+          document.getElementById('text5').innerHTML = input_taker3;
+        }, 22000);
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[4];
+          document.getElementById('text6').innerHTML = input_taker4;
+        }, 24000);
+      }
+
+      if (arr3.length == 7){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        var line23 = document.getElementById('line23');
+        setTimeout(function () {
+          line23.setAttribute('stroke-dashoffset', 0);
+        }, 3000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[6];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 8000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line25 = document.getElementById('line25');
+        setTimeout(function () {
+          line25.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[4];
+          document.getElementById('text5').innerHTML = input_taker3;
+        }, 18000);
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[5];
+          document.getElementById('text6').innerHTML = input_taker4;
+        }, 20000);
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 33000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 35000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape7 = document.getElementById('shape7');
+        shape7.style.stroke = 'green';
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        setTimeout(function () {
+          var input_taker7 = arr3[0];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 29000);
+
+        var front3 = document.getElementById('front3');
+        setTimeout(function () {
+          front3.setAttribute('stroke-dashoffset', 0);
+        }, 30000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[1];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 32000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[2];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 34000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[3];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 36000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 37000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 39000);
+
+        var line26 = document.getElementById('line26');
+        setTimeout(function () {
+          line26.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+      }
+
+
+      if (arr3.length == 8){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        var line23 = document.getElementById('line23');
+        setTimeout(function () {
+          line23.setAttribute('stroke-dashoffset', 0);
+        }, 3000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line25 = document.getElementById('line25');
+        setTimeout(function () {
+          line25.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        var line24 = document.getElementById('line24');
+        setTimeout(function () {
+          line24.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var shape7 = document.getElementById('shape7');
+        shape7.style.stroke = 'green';
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+        setTimeout(function () {
+          var input_taker7 = arr3[0];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 25000);
+
+        var front3 = document.getElementById('front3');
+        setTimeout(function () {
+          front3.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[1];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 28000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[2];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 30000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[3];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 32000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 33000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 34000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 35000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 36000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 37000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 45000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 43000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var shape13 = document.getElementById('shape13');
+        shape13.style.stroke = 'red';
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+        setTimeout(function () {
+          var input_taker11 = arr3[4];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 46000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[5];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 44000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[6];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 42000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[7];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 39000);
+
+        var rear3 = document.getElementById('rear3');
+        setTimeout(function () {
+          rear3.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+
+
+      }
+      if (arr3.length == 9){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker1 = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker1;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line25 = document.getElementById('line25');
+        setTimeout(function () {
+          line25.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        var line24 = document.getElementById('line24');
+        setTimeout(function () {
+          line24.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        setTimeout(function () {
+          var input_taker7 = arr3[1];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 26000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[2];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 28000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[3];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 30000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[4];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 32000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 33000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 34000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 35000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 36000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 37000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 45000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 43000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var shape13 = document.getElementById('shape13');
+        shape13.style.stroke = 'red';
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+        setTimeout(function () {
+          var input_taker11 = arr3[5];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 46000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[6];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 44000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[7];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 42000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[8];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 39000);
+
+        var rear3 = document.getElementById('rear3');
+        setTimeout(function () {
+          rear3.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+      }
+
+      if (arr3.length == 10){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[9];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 9000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 17000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker4;
+        }, 15000);
+
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+        setTimeout(function () {
+          var input_taker5 = arr3[7];
+          document.getElementById('text5').innerHTML = input_taker5;
+        }, 22000);
+
+        setTimeout(function () {
+          var input_taker6 = arr3[8];
+          document.getElementById('text6').innerHTML = input_taker6;
+        }, 24000);
+
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 30000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 36000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 34000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 32000);
+
+        setTimeout(function () {
+          var input_taker7 = arr3[3];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 33000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[4];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 35000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[5];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 37000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[6];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 39000);
+
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 42000);
+
+        var line26 = document.getElementById('line26');
+        setTimeout(function () {
+          line26.setAttribute('stroke-dashoffset', 0);
+        }, 43000);
+      }
+
+      if (arr3.length == 12){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+
+        setTimeout(function () {
+          var input_taker1 = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker1;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[11];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 9000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker4;
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 17000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var line24 = document.getElementById('line24');
+        setTimeout(function () {
+          line24.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 33000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 35000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+
+        setTimeout(function () {
+          var input_taker7 = arr3[3];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 30000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[4];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 32000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[5];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 34000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[6];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 36000);
+
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 37000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 39000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 48000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 46000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 44000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 42000);
+
+        setTimeout(function () {
+          var input_taker11 = arr3[7];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 49000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[8];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 47000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[9];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 45000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[10];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 43000);
+      }
+
+      if (arr3.length == 11){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        var line23 = document.getElementById('line23');
+        setTimeout(function () {
+          line23.setAttribute('stroke-dashoffset', 0);
+        }, 3000);
+
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+
+        setTimeout(function () {
+          var input_taker2 = arr3[10];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 8000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var shape3 = document.getElementById('shape3');
+        shape3.style.stroke = 'green';
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[0];
+          document.getElementById('text4').innerHTML = input_taker4;
+        }, 14000);
+
+        var front2 = document.getElementById('front2');
+        setTimeout(function () {
+          front2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[1];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 17000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var line24 = document.getElementById('line24');
+        setTimeout(function () {
+          line24.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+
+
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 33000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 35000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+
+        setTimeout(function () {
+          var input_taker7 = arr3[2];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 30000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[3];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 32000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[4];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 34000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[5];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 36000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 37000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 39000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 48000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 46000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 44000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 42000);
+
+        setTimeout(function () {
+          var input_taker11 = arr3[6];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 49000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[7];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 47000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[8];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 45000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[9];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 43000);
+
+      }
+      if (arr3.length == 13){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker1 = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker1;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        var line22 = document.getElementById('line22');
+        setTimeout(function () {
+          line22.setAttribute('stroke-dashoffset', 0);
+        }, 9000);
+
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker4;
+        }, 14000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 16000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 17000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+        var shape9 = document.getElementById('shape9');
+        shape9.style.stroke = 'red';
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 22000);
+
+
+        setTimeout(function () {
+          var input_taker5 = arr3[11];
+          document.getElementById('text5').innerHTML = input_taker5;
+        }, 21000);
+
+        setTimeout(function () {
+          var input_taker6 = arr3[12];
+          document.getElementById('text6').innerHTML = input_taker6;
+        }, 23000);
+
+        var rear2 = document.getElementById('rear2');
+        setTimeout(function () {
+          rear2.setAttribute('stroke-dashoffset', 0);
+        }, 24000);
+
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 30000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 36000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 34000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 32000);
+
+
+        setTimeout(function () {
+          var input_taker7 = arr3[3];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 33000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[4];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 35000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[5];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 37000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[6];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 39000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 42000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 43000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 44000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 51000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 49000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 47000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 45000);
+
+        setTimeout(function () {
+          var input_taker11 = arr3[7];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 52000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[8];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 50000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[9];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 48000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[10];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 46000);
+      }
+
+      if (arr3.length == 14){  //добавить зачеркнтую линию
+        var shape = document.getElementById('shape');
+        setTimeout(function () {
+          shape.setAttribute('stroke-dashoffset', 0);
+        }, 0);
+
+        var line = document.getElementById('line');
+        setTimeout(function () {
+          line.setAttribute('stroke-dashoffset', 0);
+        }, 1000);
+
+
+        var shape14 = document.getElementById('shape14');
+        shape14.style.stroke = 'green';
+        setTimeout(function () {
+          shape14.setAttribute('stroke-dashoffset', 0);
+        }, 2000);
+
+        setTimeout(function () {
+          var input_taker1 = arr3[0];
+          document.getElementById('text1').innerHTML = input_taker1;
+        }, 3000);
+
+        var front = document.getElementById('front1');
+        setTimeout(function () {
+          front.setAttribute('stroke-dashoffset', 0);
+        }, 4000);
+
+        var line3 = document.getElementById('line3');
+        setTimeout(function () {
+          line3.setAttribute('stroke-dashoffset', 0);
+        }, 5000);
+
+        var shape16 = document.getElementById('shape16');
+        setTimeout(function () {
+          shape16.setAttribute('stroke-dashoffset', 0);
+        }, 6000);
+
+        var line2 = document.getElementById('line2');
+        setTimeout(function () {
+          line2.setAttribute('stroke-dashoffset', 0);
+        }, 7000);
+
+        var shape15 = document.getElementById('shape15');
+        shape15.style.stroke = 'red';
+        setTimeout(function () {
+          shape15.setAttribute('stroke-dashoffset', 0);
+        }, 8000);
+
+        setTimeout(function () {
+          var input_taker2 = arr3[13];
+          document.getElementById('text2').innerHTML = input_taker2;
+        }, 9000);
+
+        var rear = document.getElementById('rear1');
+        setTimeout(function () {
+          rear.setAttribute('stroke-dashoffset', 0);
+        }, 10000);
+
+        var line5 = document.getElementById('line5');
+        setTimeout(function () {
+          line5.setAttribute('stroke-dashoffset', 0);
+        }, 11000);
+
+        var line6 = document.getElementById('line6');
+        setTimeout(function () {
+          line6.setAttribute('stroke-dashoffset', 0);
+        }, 12000);
+
+        var line7 = document.getElementById('line7');
+        setTimeout(function () {
+          line7.setAttribute('stroke-dashoffset', 0);
+        }, 13000);
+
+        var shape3 = document.getElementById('shape3');
+        setTimeout(function () {
+          shape3.setAttribute('stroke-dashoffset', 0);
+        }, 14000);
+
+        var shape2 = document.getElementById('shape2');
+        setTimeout(function () {
+          shape2.setAttribute('stroke-dashoffset', 0);
+        }, 16000);
+
+        setTimeout(function () {
+          var input_taker4 = arr3[1];
+          document.getElementById('text4').innerHTML = input_taker4;
+        }, 15000);
+
+        setTimeout(function () {
+          var input_taker3 = arr3[2];
+          document.getElementById('text3').innerHTML = input_taker3;
+        }, 17000);
+
+        var line8 = document.getElementById('line8');
+        setTimeout(function () {
+          line8.setAttribute('stroke-dashoffset', 0);
+        }, 18000);
+
+        var line9 = document.getElementById('line9');
+        setTimeout(function () {
+          line9.setAttribute('stroke-dashoffset', 0);
+        }, 19000);
+
+        var line10 = document.getElementById('line10');
+        setTimeout(function () {
+          line10.setAttribute('stroke-dashoffset', 0);
+        }, 20000);
+
+
+
+        var shape8 = document.getElementById('shape8');
+        setTimeout(function () {
+          shape8.setAttribute('stroke-dashoffset', 0);
+        }, 21000);
+
+        var shape9 = document.getElementById('shape9');
+        setTimeout(function () {
+          shape9.setAttribute('stroke-dashoffset', 0);
+        }, 23000);
+        var shape9 = document.getElementById('shape9');
+
+        setTimeout(function () {
+          var input_taker5 = arr3[11];
+          document.getElementById('text5').innerHTML = input_taker5;
+        }, 22000);
+
+        setTimeout(function () {
+          var input_taker6 = arr3[12];
+          document.getElementById('text6').innerHTML = input_taker6;
+        }, 24000);
+
+
+        var line11 = document.getElementById('line11');
+        setTimeout(function () {
+          line11.setAttribute('stroke-dashoffset', 0);
+        }, 25000);
+
+        var shape17 = document.getElementById('shape17');
+        setTimeout(function () {
+          shape17.setAttribute('stroke-dashoffset', 0);
+        }, 26000);
+
+
+
+        var line12 = document.getElementById('line12');
+        setTimeout(function () {
+          line12.setAttribute('stroke-dashoffset', 0);
+        }, 27000);
+
+        var line13 = document.getElementById('line13');
+        setTimeout(function () {
+          line13.setAttribute('stroke-dashoffset', 0);
+        }, 28000);
+
+        var line14 = document.getElementById('line14');
+        setTimeout(function () {
+          line14.setAttribute('stroke-dashoffset', 0);
+        }, 29000);
+
+        var line15 = document.getElementById('line15');
+        setTimeout(function () {
+          line15.setAttribute('stroke-dashoffset', 0);
+        }, 30000);
+
+        var line16 = document.getElementById('line16');
+        setTimeout(function () {
+          line16.setAttribute('stroke-dashoffset', 0);
+        }, 31000);
+
+        var shape4 = document.getElementById('shape4');
+        setTimeout(function () {
+          shape4.setAttribute('stroke-dashoffset', 0);
+        }, 36000);
+
+
+        var shape5 = document.getElementById('shape5');
+        setTimeout(function () {
+          shape5.setAttribute('stroke-dashoffset', 0);
+        }, 38000);
+
+
+        var shape6 = document.getElementById('shape6');
+        setTimeout(function () {
+          shape6.setAttribute('stroke-dashoffset', 0);
+        }, 34000);
+
+        var shape7 = document.getElementById('shape7');
+        setTimeout(function () {
+          shape7.setAttribute('stroke-dashoffset', 0);
+        }, 32000);
+
+        setTimeout(function () {
+          var input_taker7 = arr3[3];
+          document.getElementById('text7').innerHTML = input_taker7;
+        }, 33000);
+
+        setTimeout(function () {
+          var input_taker8 = arr3[4];
+          document.getElementById('text8').innerHTML = input_taker8;
+        }, 35000);
+
+        setTimeout(function () {
+          var input_taker9 = arr3[5];
+          document.getElementById('text9').innerHTML = input_taker9;
+        }, 37000);
+
+        setTimeout(function () {
+          var input_taker10 = arr3[6];
+          document.getElementById('text10').innerHTML = input_taker10;
+        }, 39000);
+
+        var line17 = document.getElementById('line17');
+        setTimeout(function () {
+          line17.setAttribute('stroke-dashoffset', 0);
+        }, 40000);
+
+        var line18 = document.getElementById('line18');
+        setTimeout(function () {
+          line18.setAttribute('stroke-dashoffset', 0);
+        }, 41000);
+
+        var line19 = document.getElementById('line19');
+        setTimeout(function () {
+          line19.setAttribute('stroke-dashoffset', 0);
+        }, 42000);
+
+        var line20 = document.getElementById('line20');
+        setTimeout(function () {
+          line20.setAttribute('stroke-dashoffset', 0);
+        }, 43000);
+
+        var line21 = document.getElementById('line21');
+        setTimeout(function () {
+          line21.setAttribute('stroke-dashoffset', 0);
+        }, 44000);
+
+        var shape10 = document.getElementById('shape10');
+        setTimeout(function () {
+          shape10.setAttribute('stroke-dashoffset', 0);
+        }, 51000);
+
+        var shape11 = document.getElementById('shape11');
+        setTimeout(function () {
+          shape11.setAttribute('stroke-dashoffset', 0);
+        }, 49000);
+
+
+        var shape12 = document.getElementById('shape12');
+        setTimeout(function () {
+          shape12.setAttribute('stroke-dashoffset', 0);
+        }, 47000);
+
+        var shape13 = document.getElementById('shape13');
+        setTimeout(function () {
+          shape13.setAttribute('stroke-dashoffset', 0);
+        }, 45000);
+
+
+        setTimeout(function () {
+          var input_taker11 = arr3[7];
+          document.getElementById('text11').innerHTML = input_taker11;
+        }, 52000);
+
+        setTimeout(function () {
+          var input_taker12 = arr3[8];
+          document.getElementById('text12').innerHTML = input_taker12;
+        }, 50000);
+
+        setTimeout(function () {
+          var input_taker13 = arr3[9];
+          document.getElementById('text13').innerHTML = input_taker13;
+        }, 48000);
+
+        setTimeout(function () {
+          var input_taker14 = arr3[10];
+          document.getElementById('text14').innerHTML = input_taker14;
+        }, 46000);
+
+
+      }
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+  </script>
+
+
+
+
+ </body>
+
+</html>
