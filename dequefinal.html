@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Persistent Deque</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+    box-sizing: border-box;
+}
+
+/* Style the body */
+body {
+    font-family: Arial;
+    margin: 0;
+}
+
+/* Header/logo Title */
+.header {
+    padding: 80px;
+    height: 30px;
+    text-align: center;
+    background: #1abc9c;
+    color: white;
+}
+
+/* Increase the font size of the heading */
+.header h1 {
+    font-size: 40px;
+}
+
+/* Style the top navigation bar */
+.navbar {
+    overflow: hidden;
+    background-color: #333;
+    height: 50px;
+}
+
+/* Style the navigation bar links */
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+/* Right-aligned link */
+.navbar a.right {
+    float: right;
+}
+
+/* Change color on hover */
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Column container */
+.row {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+}
+
+/* Create two unequal columns that sits next to each other */
+/* Sidebar/left column */
+.side {
+    -ms-flex: 30%; /* IE10 */
+    flex: 30%;
+    background-color: #f1f1f1;
+    padding: 20px;
+}
+
+/* Main column */
+.main {
+    -ms-flex: 70%; /* IE10 */
+    flex: 70%;
+    background-color: white;
+    padding: 20px;
+}
+
+/* Fake image, just for this example */
+.fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Footer */
+.footer {
+    padding: 20px;
+    text-align: center;
+    background: #ddd;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+    .row {
+        flex-direction: column;
+    }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+    .navbar a {
+        float: none;
+        width: 100%;
+    }
+}
+
+
+
+@import "compass/css3";
+
+$size: 50px;
+$thickness: 5px;
+$angle: 40deg;
+$angleHover: 30deg;
+$angleActive: 25deg;
+
+@mixin arrowTransform( $angle, $x: 0, $y: 0 ) {
+  i:first-child {
+    transform: translate( $x, $y ) rotate( $angle );
+  }
+
+  i:last-child {
+    transform: translate( $x, -$y ) rotate( -$angle );
+  }
+}
+
+
+
+button {
+  -webkit-appearance: none;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+
+.paginate {
+  position: relative;
+  margin: 10px;
+  width: $size;
+  height: $size;
+  cursor: pointer;
+  transform: translate3d(0,0,0); // fixes flicker in webkit
+
+  position: absolute;
+  top: 50%;
+  margin-top: -20px;
+  -webkit-filter: drop-shadow( 0 2px 0px rgba(0,0,0,0.2) );
+
+  i {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    width: $size;
+    height: $thickness;
+    border-radius: $thickness / 2;
+    background: #fff;
+
+    transition: all 0.15s ease;
+  }
+
+  &.left {
+    right: 58%;
+
+    i {
+      transform-origin: 0% 50%
+    }
+
+    @include arrowTransform( $angle, 0, -1px );
+
+    &:hover {
+      @include arrowTransform( $angleHover, 0, -1px );
+    }
+
+    &:active {
+      @include arrowTransform( $angleActive, 1px, -1px );
+    }
+
+    &[data-state=disabled] {
+      @include arrowTransform( 0deg, -5px, 0 );
+
+      &:hover {
+        @include arrowTransform( 0deg, -5px, 0 );
+      }
+    }
+  }
+
+  &.right {
+    left: 58%;
+
+    i {
+      transform-origin: 100% 50%
+    }
+
+    @include arrowTransform( $angle, 0, 1px );
+
+    &:hover {
+      @include arrowTransform( $angleHover, 0, 1px );
+    }
+
+    &:active {
+      @include arrowTransform( $angleActive, 1px, 1px );
+    }
+
+    &[data-state=disabled] {
+      @include arrowTransform( 0deg, 5px, 0 );
+
+      &:hover {
+        @include arrowTransform( 0deg, 5px, 0 );
+      }
+    }
+  }
+
+  &[data-state=disabled] {
+    opacity: 0.3;
+    cursor: default;
+  }
+}
+
+
+
+.counter {
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  margin-top: -15px;
+  font-size: 30px;
+  font-family: Helvetica, sans-serif;
+  text-shadow: 0px 2px 0px rgba( 0, 0, 0, 0.2 );
+  color: #fff;
+}
+
+
+@import "compass/css3";
+
+ button {
+	 -webkit-appearance: none;
+	 background: transparent;
+	 border: 0;
+	 outline: 0;
+}
+ .paginate {
+	 position: relative;
+	 margin: 10px;
+	 width: 50px;
+	 height: 50px;
+	 cursor: pointer;
+	 transform: translate3d(0, 0, 0);
+	 position: absolute;
+	 top: 50%;
+	 margin-top: -75px;
+	 -webkit-filter: drop-shadow(0 2px 0px rgba(0, 0, 0, 0.2));
+}
+ .paginate i {
+	 position: absolute;
+	 top: 40%;
+	 left: -120px;
+	 width: 30px;
+	 height: 4px;
+	 border-radius: 1.5px;
+	 background: black;
+	 transition: all 0.15s ease;
+}
+ .paginate.left {
+	 right: 48%;
+}
+ .paginate.left i {
+	 transform-origin: 0% 50%;
+}
+ .paginate.left i:first-child {
+	 transform: translate(0, -1px) rotate(40deg);
+}
+ .paginate.left i:last-child {
+	 transform: translate(0, 1px) rotate(-40deg);
+}
+ .paginate.left:hover i:first-child {
+	 transform: translate(0, -1px) rotate(30deg);
+}
+ .paginate.left:hover i:last-child {
+	 transform: translate(0, 1px) rotate(-30deg);
+}
+ .paginate.left:active i:first-child {
+	 transform: translate(1px, -1px) rotate(25deg);
+}
+ .paginate.left:active i:last-child {
+	 transform: translate(1px, 1px) rotate(-25deg);
+}
+ .paginate.left[data-state=disabled] i:first-child {
+	 transform: translate(-5px, 0) rotate(0deg);
+}
+ .paginate.left[data-state=disabled] i:last-child {
+	 transform: translate(-5px, 0) rotate(0deg);
+}
+ .paginate.left[data-state=disabled]:hover i:first-child {
+	 transform: translate(-5px, 0) rotate(0deg);
+}
+ .paginate.left[data-state=disabled]:hover i:last-child {
+	 transform: translate(-5px, 0) rotate(0deg);
+}
+ .paginate.right {
+	 left: 58%;
+}
+ .paginate.right i {
+	 transform-origin: 100% 50%;
+}
+ .paginate.right i:first-child {
+	 transform: translate(0, 1px) rotate(40deg);
+}
+ .paginate.right i:last-child {
+	 transform: translate(0, -1px) rotate(-40deg);
+}
+ .paginate.right:hover i:first-child {
+	 transform: translate(0, 1px) rotate(30deg);
+}
+ .paginate.right:hover i:last-child {
+	 transform: translate(0, -1px) rotate(-30deg);
+}
+ .paginate.right:active i:first-child {
+	 transform: translate(1px, 1px) rotate(25deg);
+}
+ .paginate.right:active i:last-child {
+	 transform: translate(1px, -1px) rotate(-25deg);
+}
+ .paginate.right[data-state=disabled] i:first-child {
+	 transform: translate(5px, 0) rotate(0deg);
+}
+ .paginate.right[data-state=disabled] i:last-child {
+	 transform: translate(5px, 0) rotate(0deg);
+}
+ .paginate.right[data-state=disabled]:hover i:first-child {
+	 transform: translate(5px, 0) rotate(0deg);
+}
+ .paginate.right[data-state=disabled]:hover i:last-child {
+	 transform: translate(5px, 0) rotate(0deg);
+}
+ .paginate[data-state=disabled] {
+	 opacity: 0.3;
+	 cursor: default;
+}
+ .counter {
+	 text-align: center;
+	 position: absolute;
+	 width: 100%;
+	 top: 50%;
+	 margin-top: -75px;
+	 font-size: 30px;
+	 font-family: Helvetica, sans-serif;
+	 text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.2);
+	 color: black;
+   margin-left: -70px;
+}
+
+
+svg #shape {
+ fill: none;
+ stroke: black;
+ stroke-width: 2;
+ transition: all 4s ease-in-out;
+}
+
+svg #shape2 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape3 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape4 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+svg #shape5 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape6 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape7 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+svg #shape8 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape9 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape10 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape11 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+svg #shape12 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape13 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape14 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #shape15 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+svg #shape16 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+svg #shape17 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line2 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line3 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line4 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line5 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line6 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line7 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line8 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line9 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line10 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line11 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line12 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line13 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line14 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line15 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line16 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line17 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line18 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line19 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line20 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line21 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line22 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line23 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line24 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line25 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line26 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #line27 {
+fill: none;
+stroke: black;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #front1 {
+font: italic 23px serif;
+fill: none;
+stroke: green;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #front2 {
+font: italic 23px serif;
+fill: none;
+stroke: green;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #front3 {
+font: italic 23px serif;
+fill: none;
+stroke: green;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #rear1 {
+font: italic 23px serif;
+fill: none;
+stroke: red;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #rear2 {
+font: italic 23px serif;
+fill: none;
+stroke: red;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+svg #rear3 {
+font: italic 23px serif;
+fill: none;
+stroke: red;
+stroke-width: 2;
+transition: all 4s ease-in-out;
+}
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1 style="margin-top: -20px">Персистентный дек</h1>
+</div>
+
+<div class="navbar">
+  <input type="text" name="kye" size="10" maxlength="15" style="margin-top: 15px; margin-left: 10px;" id="number"/>
+  <input value="Push front" type="button" onclick="pushfront(); appear(); change()">
+  <input value="Push back" type="button" onclick="pushback(); appear(); change()">
+  <input value="Pop front" type="button" onclick="popfront(); appear()">
+  <input value="Pop back" type="button" onclick="popback(); appear()">
+
+
+
+</div>
+
+
+<div id="blocks" style="height: 60px; width: 600px;">
+  <div id="block1" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+  <p id="block" style="margin-left: 10px; margin-top: 10px;"></p>
+ </div>
+
+
+
+ <div id="block8" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+ <p id="block9" style="margin-left: 10px; margin-top: 10px;"></p>
+ </div>
+
+
+ <div id="block2" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+ <p id="block5" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block3" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block6" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+<div id="block10" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block11" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block4" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block7" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block12" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block13" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+<div id="block14" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block15" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+<div id="blocks" style="height: 60px; width: 600px;">
+  <div id="block1" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+  <p id="block" style="margin-left: 10px; margin-top: 10px;"></p>
+ </div>
+
+
+
+ <div id="block8" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+ <p id="block9" style="margin-left: 10px; margin-top: 10px;"></p>
+ </div>
+
+
+ <div id="block2" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+ <p id="block5" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block3" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block6" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+<div id="block10" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block11" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block4" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block7" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+
+<div id="block12" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block13" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+<div id="block14" style="height: 40px; width: 40px; border: 1px solid black; margin-top: 20px; margin-left: 20px; display: none; position: absolute">
+<p id="block15" style="margin-left: 10px; margin-top: 10px;"></p>
+</div>
+
+</div>
+
+
+<div id="texts">
+<div id="text" style="height: 20px; width: 60px; display: none">
+  <p style="color: green; margin-left: 23px; ">front</p>
+</div>
+
+<div id="text9" style="height: 20px; width: 60px; display: none">
+  <p style="color: green; margin-left: 63px; ">front</p>
+</div>
+
+<div id="text2" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 63px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text3" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 103px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text4" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 143px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text5" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 183px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text6" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 223px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text7" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 263px; margin-top: -20px; ">rear</p>
+</div>
+
+<div id="text8" style="height: 20px; width: 60px; display: none">
+  <p style="color: red; margin-left: 303px; margin-top: -20px; ">rear</p>
+</div>
+
+
+</div>
+
+
+
+
+<div class="main">
+  <svg style="width: 1000px; height: 1000px; background: transparent;">
+  <text id="word1" x="520" y="235"></text> //текст для круга слева 2й уровень
+  <text id="word2" x="622" y="235"></text> //текст для круга справа 2й уровень
+  <text id="word3" x="502" y="385"></text> //текст для круга слева 3й уровень
+  <text id="word4" x="442" y="385"></text> //текст для круга слева 3й уровень
+  <text id="word5" x="642" y="385"></text> //текст для круга справа 3й уровень
+  <text id="word6" x="702" y="385"></text> //текст для круга слева 3й уровень
+  <text id="word7" x="322" y="535"></text> //текст для круга слева 4й уровень
+  <text id="word8" x="382" y="535"></text> //текст для круга слева 4й уровень
+  <text id="word9" x="442" y="535"></text> //текст для круга слева 4й уровень
+  <text id="word10" x="502" y="535"></text> //текст для круга слева 4й уровень
+  <text id="word11" x="642" y="535"></text> //текст для круга справа 4й уровень
+  <text id="word12" x="702" y="535"></text> //текст для круга справа 4й уровень
+  <text id="word13" x="762" y="535"></text> //текст для круга справа 4й уровень
+  <text id="word14" x="822" y="535"></text> //текст для круга справа 4й уровень
+  <text id="front1" x="480" y="200"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 2й уровень
+  <text id="front2" x="380" y="350"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 3й уровень
+   <text id="front3" x="280" y="500"  stroke-dasharray='900' stroke-dashoffset='900'>front</text> //front для круга слева 4й уровень
+  <text id="rear1" x="630" y="200"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 2й уровень
+  <text id="rear2" x="730" y="350"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 3й уровень
+  <text id="rear3" x="830" y="500"  stroke-dasharray='900' stroke-dashoffset='900'>rear</text> //rear для круга справа 4й уровень
+  <circle id='shape2' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(480 350)"/> //круг слева на 3м уровне
+  <circle id='shape3' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(420 350)"/> //круг слева на 3м уровне
+  <circle id='shape4' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(420 500)"/> //круг слева на 4м уровне
+  <circle id='shape5' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(480 500)"/> //круг слева на 4м уровне
+  <circle id='shape6' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(360 500)"/> //круг слева на 4м уровне
+  <circle id='shape7' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(300 500)"/> //круг слева на 4м уровне
+  <circle id='shape8' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(620 350)"/> //круг справа на 3м уровне
+  <circle id='shape9' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(680 350)"/> //круг справа на 3м уровне
+  <circle id='shape10' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(620 500)"/> //круг справа на 4м уровне
+  <circle id='shape11' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(680 500)"/> //круг справа на 4м уровне
+  <circle id='shape12' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(740 500)"/> //круг справа на 4м уровне
+  <circle id='shape13' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(800 500)"/> // круг справа на 4м уровне
+  <circle id='shape14' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(500 200)"/> // круг слева на 2м уровне
+  <circle id='shape15' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900'  transform = "translate(600 200)"/> //круг справа на 2м уровне
+  <circle id='shape' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 50)"/> //круг посерединке 1-й
+  <circle id='shape16' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 280)"/> //круг посерединке 2-й
+  <circle id='shape17' cx='30' cy='30' r='20' stroke-dasharray='900' stroke-dashoffset='900' transform = "translate(550 430)"/> //круг посерединке 3-й
+  <line id="line"  x2="530" y2="200" x1="570" y1="110" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> // линия
+  <line id="line2" x1="590" y1="110" x2="620" y2="200" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+  <line id="line3" x1="580" y1="110" x2="580" y2="280" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line11" x1="580" y1="340" x2="580" y2="430" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+  <line id="line5" x1="550" y1="320" x2="490" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+  <line id="line6" x1="490" y1="330" x2="470" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line7" x1="490" y1="330" x2="510" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line8" x1="610" y1="320" x2="680" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+  <line id="line9" x1="680" y1="330" x2="660" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900' /> //линия
+  <line id="line10" x1="680" y1="330" x2="700" y2="350" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line12" x1="550" y1="470" x2="440" y2="480" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line13" x1="440" y1="480" x2="340" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line14" x1="440" y1="480" x2="410" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line15" x1="440" y1="480" x2="460" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line16" x1="440" y1="480" x2="510" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line17" x1="610" y1="470" x2="730" y2="480" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line18" x1="730" y1="480" x2="820" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line19" x1="730" y1="480" x2="750" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line20" x1="730" y1="480" x2="710" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line21" x1="730" y1="480" x2="660" y2="500" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //линия
+  <line id="line4" x1="595" y1="290" x2="560" y2="330" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //дополнительная зачеркнутая линия для второго круга
+  <line id="line22" x1="645" y1="210" x2="610" y2="250" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 2м уровне
+  <line id="line23" x1="545" y1="210" x2="510" y2="250" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга слева на 2м уровне
+  <line id="line24" x1="725" y1="360" x2="690" y2="400" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 3м уровне
+  <line id="line25" x1="465" y1="360" x2="430" y2="400" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга слева на 3м уровне
+  <line id="line26" x1="845" y1="510" x2="810" y2="550" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 3м уровне
+  <line id="line27" x1="345" y1="510" x2="310" y2="550" stroke="black" stroke-dasharray='900' stroke-dashoffset='900'/> //зачеркнутая линия для круга справа на 3м уровне
+</svg>
+
+</div>
+
+
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+
+
+  <script>
+  // basic paging logic to demo the buttons
+
+var index = 0, total = 8;
+document.querySelector( '.counter' ).innerHTML = ( index ) + ' / ' + total;
+
+
+function slide(offset) {
+  index = Math.min( Math.max( index + offset, 0 ), total - 1 );
+
+  document.querySelector( '.counter' ).innerHTML = ( index + 1 ) + ' / ' + total;
+
+  pr.setAttribute( 'data-state', index === 0 ? 'disabled' : '' );
+  pl.setAttribute( 'data-state', index === total - 1 ? 'disabled' : '' );
+}
+
+
+
+
+
+
+function change(){
+  if (everything == 1){
+    document.querySelector( '.counter' ).innerHTML = ( index + 1 ) + ' / ' + total;
+  }
+  if (everything == 2){
+    document.querySelector( '.counter' ).innerHTML = ( index + 2 ) + ' / ' + total;
+  }
+
+  if (everything == 3){
+    document.querySelector( '.counter' ).innerHTML = ( index + 3 ) + ' / ' + total;
+  }
+  if (everything == 4){
+    document.querySelector( '.counter' ).innerHTML = ( index + 4 ) + ' / ' + total;
+  }
+  if (everything == 5){
+    document.querySelector( '.counter' ).innerHTML = ( index + 5 ) + ' / ' + total;
+  }
+
+  if (everything == 6){
+    document.querySelector( '.counter' ).innerHTML = ( index + 6 ) + ' / ' + total;
+  }
+
+  if (everything == 7){
+    document.querySelector( '.counter' ).innerHTML = ( index + 7 ) + ' / ' + total;
+  }
+  if (everything == 8){
+    document.querySelector( '.counter' ).innerHTML = ( index + 8 ) + ' / ' + total;
+  }
+
+}
+  </script>
+
+<script>
+
+function appear(){
+
+
+
+  if (countfront == 1){
+    var input_taker = document.getElementById('number').value;
+    document.getElementById('block').innerHTML = input_taker;
+    $("#block1").fadeIn('slow');
+    $("#text").fadeIn('slow');
+    var elem = document.getElementById("block1");
+    elem.style.border = '2px solid green';
+
+  }
+
+  if (countfront == 1 && countback == 1){
+    var elem = document.getElementById("block1");
+    var pos = 0;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == 40) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = pos + 'px';
+      }
+    }
+    elem.style.border = '2px solid red';
+    elem.style.display = 'block';
+    var input_taker = arr2[0];
+    document.getElementById('block').innerHTML = input_taker;
+    $("#block8").fadeIn('slow');
+    var elem2 = document.getElementById("block8");
+    elem2.style.border = '2px solid green';
+
+    var input_taker2 = arr[0];
+    document.getElementById('block9').innerHTML = input_taker2;
+
+      $("#text2").fadeIn('slow');
+
+  }
+
+  if (countfront == 2 && countback == 1){
+
+
+    var elem2 = document.getElementById("block8");
+    var pos2 = 0;
+    var id2 = setInterval(frame2, 10);
+    function frame2() {
+      if (pos2 == 40) {
+        clearInterval(id2);
+      } else {
+        pos2++;
+        elem2.style.left = pos2 + 'px';
+      }
+    }
+
+    var elem = document.getElementById("block1");
+    var pos = 40;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == 80) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = pos + 'px';
+      }
+    }
+
+    var input_taker = arr[1];
+    document.getElementById('block5').innerHTML = input_taker;
+    $("#block2").fadeIn('slow');
+    var elem3 = document.getElementById("block2");
+    elem3.style.border = '2px solid green';
+
+    elem2.style.border = '1px solid black';
+
+    $("#text3").fadeIn('slow');
+    var t = document.getElementById('text2');
+    t.style.display = 'none';
+  }
+
+  if (countfront == 3 && countback == 1){
+    var elem2 = document.getElementById("block8");
+    var pos2 = 40;
+    var id2 = setInterval(frame2, 10);
+    function frame2() {
+      if (pos2 == 80) {
+        clearInterval(id2);
+      } else {
+        pos2++;
+        elem2.style.left = pos2 + 'px';
+      }
+    }
+
+    var elem = document.getElementById("block1");
+    var pos = 80;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == 120) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = pos + 'px';
+      }
+    }
+
+    var elem3 = document.getElementById("block2");
+    var pos3 = 0;
+    var id3 = setInterval(frame3, 10);
+    function frame3() {
+      if (pos3 == 40) {
+        clearInterval(id3);
+      } else {
+        pos3++;
+        elem3.style.left = pos3 + 'px';
+      }
+    }
+
+    elem3.style.border = '1px solid black';
+
+    var input_taker = arr[2];
+    document.getElementById('block6').innerHTML = input_taker;
+    $("#block3").fadeIn('slow');
+    var elem4 = document.getElementById("block3");
+    elem4.style.border = '2px solid green';
+
+    $("#text4").fadeIn('slow');
+    var t = document.getElementById('text3');
+    t.style.display = 'none';
+  }
+
+
+  if (countfront == 3 && countback == 2){
+    var elem3 = document.getElementById("block3");
+    var pos3 = 0;
+    var id3 = setInterval(frame3, 10);
+    function frame3() {
+      if (pos3 == 160) {
+        clearInterval(id3);
+      } else {
+        pos3++;
+        elem3.style.left = pos3 + 'px';
+      }
+    }
+
+    var elem4 = document.getElementById("block1");
+    elem4.style.border = '1px solid black';
+
+    elem3.style.border = '2px solid red';
+    elem3.style.display = 'block';
+    /*var elem2 = document.getElementById("block8");
+    elem2.style.display = 'block';*/
+    var input_taker = arr2[0];
+    document.getElementById('block').innerHTML = input_taker;
+    $("#block10").fadeIn('slow');
+    var elem2 = document.getElementById("block10");
+    elem2.style.border = '2px solid green';
+
+    var input_taker2 = arr[2];
+    document.getElementById('block11').innerHTML = input_taker2;
+
+    var input_taker3 = arr2[1];
+    document.getElementById('block6').innerHTML = input_taker3;
+
+    $("#text5").fadeIn('slow');
+    var t = document.getElementById('text4');
+    t.style.display = 'none';
+  }
+
+  if (countfront == 4 && countback == 2){
+    var elem2 = document.getElementById("block8");
+    var pos2 = 80;
+    var id2 = setInterval(frame2, 10);
+    function frame2() {
+      if (pos2 == 120) {
+        clearInterval(id2);
+      } else {
+        pos2++;
+        elem2.style.left = pos2 + 'px';
+      }
+    }
+
+    var elem = document.getElementById("block1");
+    var pos = 120;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (pos == 160) {
+        clearInterval(id);
+      } else {
+        pos++;
+        elem.style.left = pos + 'px';
+      }
+    }
+
+    var elem3 = document.getElementById("block2");
+    var pos3 = 40;
+    var id3 = setInterval(frame3, 10);
+    function frame3() {
+      if (pos3 == 80) {
+        clearInterval(id3);
+      } else {
+        pos3++;
+        elem3.style.left = pos3 + 'px';
+      }
+    }
+
+    var elem4 = document.getElementById("block3");
+    var pos4 = 160;
+    var id4 = setInterval(frame4, 10);
+    function frame4() {
+      if (pos4 == 200) {
+        clearInterval(id4);
+      } else {
+        pos4++;
+        elem4.style.left = pos4 + 'px';
+      }
+    }
+
+    var elem5 = document.getElementById("block10");
+    var pos5 = 0;
+    var id5 = setInterval(frame5, 10);
+    function frame5() {
+      if (pos5 == 40) {
+        clearInterval(id5);
+      } else {
+        pos5++;
+        elem5.style.left = pos5 + 'px';
+      }
+    }
+    elem5.style.border = '1px solid black';
+
+    var input_taker = arr[3];
+    document.getElementById('block7').innerHTML = input_taker;
+    $("#block4").fadeIn('slow');
+    var elem6 = document.getElementById("block4");
+    elem6.style.border = '2px solid green';
+
+    $("#text6").fadeIn('slow');
+    var t = document.getElementById('text5');
+    t.style.display = 'none';
+
+  }
+
+  if (countfront == 4 && countback == 3){
+    var elem3 = document.getElementById("block4");
+    var pos3 = 0;
+    var id3 = setInterval(frame3, 10);
+    function frame3() {
+      if (pos3 == 240) {
+        clearInterval(id3);
+      } else {
+        pos3++;
+        elem3.style.left = pos3 + 'px';
+      }
+    }
+
+    var elem4 = document.getElementById("block3");
+    elem4.style.border = '1px solid black';
+
+    elem3.style.border = '2px solid red';
+    elem3.style.display = 'block';
+    /*var elem2 = document.getElementById("block8");
+    elem2.style.display = 'block';*/
+    var input_taker = arr[3];
+    document.getElementById('block13').innerHTML = input_taker;
+    $("#block12").fadeIn('slow');
+    var elem2 = document.getElementById("block12");
+    elem2.style.border = '2px solid green';
+
+    var input_taker2 = arr2[2];
+    document.getElementById('block7').innerHTML = input_taker2;
+
+    $("#text7").fadeIn('slow');
+    var t = document.getElementById('text6');
+    t.style.display = 'none';
+
+  }
+
+  if (countfront == 4 && countback == 4){
+    var elem3 = document.getElementById("block12");
+    var pos3 = 0;
+    var id3 = setInterval(frame3, 10);
+    function frame3() {
+      if (pos3 == 280) {
+        clearInterval(id3);
+      } else {
+        pos3++;
+        elem3.style.left = pos3 + 'px';
+      }
+    }
+
+    var elem4 = document.getElementById("block4");
+    elem4.style.border = '1px solid black';
+
+    elem3.style.border = '2px solid red';
+    elem3.style.display = 'block';
+    /*var elem2 = document.getElementById("block8");
+    elem2.style.display = 'block';*/
+    var input_taker = arr[3];
+    document.getElementById('block15').innerHTML = input_taker;
+    $("#block14").fadeIn('slow');
+    var elem2 = document.getElementById("block14");
+    elem2.style.border = '2px solid green';
+
+    var input_taker2 = arr2[3];
+    document.getElementById('block13').innerHTML = input_taker2;
+
+    $("#text8").fadeIn('slow');
+    var t = document.getElementById('text7');
+    t.style.display = 'none';
+  }
+  if (count2 == 1){
+    var elem3 = document.getElementById("block12");
+    elem3.style.display = 'none';
+    $("#text7").fadeIn('slow');
+    var t = document.getElementById('text8');
+    t.style.display = 'none';
+
+    var elem4 = document.getElementById("block4");
+    elem4.style.border = '2px solid red';
+  }
+  if (count == 1){
+    var elem3 = document.getElementById("block14");
+    elem3.style.display = 'none';
+    $("#text9").fadeIn('slow');
+    var t = document.getElementById('text');
+    t.style.display = 'none';
+    var elem4 = document.getElementById("block10");
+    elem4.style.border = '2px solid green';
+  }
+}
+
+
+var count = 0;
+function popfront(){
+  count++;
+  if (count == 1){
+
+    var shape14 = document.getElementById('shape14');
+    shape14.style.stroke = 'green';
+    setTimeout(function () {
+      shape14.setAttribute('stroke-dashoffset', 0);
+    }, 0);
+
+    var front = document.getElementById('front1');
+    setTimeout(function () {
+      front.setAttribute('stroke-dashoffset', 0);
+    }, 8000);
+
+    var line23 = document.getElementById('line23');
+    setTimeout(function () {
+      line23.setAttribute('stroke-dashoffset', 900);
+    }, 6000);
+
+    var line7 = document.getElementById('line7');
+    setTimeout(function () {
+      line7.setAttribute('stroke-dashoffset', 0);
+    }, 6000);
+
+    var shape2 = document.getElementById('shape2');
+    setTimeout(function () {
+      shape2.setAttribute('stroke-dashoffset', 0);
+    }, 6000);
+
+    var line25 = document.getElementById('line25');
+    setTimeout(function () {
+      line25.setAttribute('stroke-dashoffset', 900);
+    }, 6000);
+
+    var line27 = document.getElementById('line27');
+    setTimeout(function () {
+      line27.setAttribute('stroke-dashoffset', 0);
+    }, 4000);
+
+
+    var line14 = document.getElementById('line14');
+    setTimeout(function () {
+      line14.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line15 = document.getElementById('line15');
+    setTimeout(function () {
+      line15.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line16 = document.getElementById('line16');
+    setTimeout(function () {
+      line16.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var shape4 = document.getElementById('shape4');
+    setTimeout(function () {
+      shape4.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+
+    var shape5 = document.getElementById('shape5');
+    setTimeout(function () {
+      shape5.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+
+    var shape6 = document.getElementById('shape6');
+    setTimeout(function () {
+      shape6.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var shape7 = document.getElementById('shape7');
+    shape7.style.stroke = 'black';
+    setTimeout(function () {
+      shape7.setAttribute('stroke-dashoffset', 0);
+    }, 0);
+
+
+
+    var front3 = document.getElementById('front3');
+    setTimeout(function () {
+      front3.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+var el = document.getElementById('word7');
+el.style.opacity = 0;
+
+var el1 = document.getElementById('word8');
+el1.style.opacity = 0;
+
+var el2 = document.getElementById('word9');
+el2.style.opacity = 0;
+
+var el3 = document.getElementById('word10');
+el3.style.opacity = 0;
+
+setTimeout(function () {
+  var word1 = document.getElementById('word1');
+  var input_taker = arr[2];
+  document.getElementById('word1').innerHTML = input_taker;
+  word1.style.opacity = 1;
+}, 10000);
+
+setTimeout(function () {
+  var word3 = document.getElementById('word3');
+  var input_taker3 = arr[0];
+  document.getElementById('word3').innerHTML = input_taker3;
+  word3.style.opacity = 1;
+}, 10000);
+
+setTimeout(function () {
+  var word4 = document.getElementById('word4');
+  var input_taker4 = arr[1];
+  document.getElementById('word4').innerHTML = input_taker4;
+  word4.style.opacity = 1;
+}, 10000);
+
+}
+if (count == 2){
+
+}
+if (count == 3){
+
+}
+if (count == 4){
+
+}
+}
+
+
+var count2 = 0;
+function popback(){
+  count2++;
+  if (count2 == 1){
+    var shape15 = document.getElementById('shape15');
+    shape15.style.stroke = 'red';
+    setTimeout(function () {
+      shape15.setAttribute('stroke-dashoffset', 0);
+    }, 10000);
+
+    var rear = document.getElementById('rear1');
+    setTimeout(function () {
+      rear.setAttribute('stroke-dashoffset', 0);
+    }, 10000);
+
+    var line9 = document.getElementById('line9');
+    setTimeout(function () {
+      line9.setAttribute('stroke-dashoffset', 0);
+    }, 10000);
+
+    var shape8 = document.getElementById('shape8');
+    setTimeout(function () {
+      shape8.setAttribute('stroke-dashoffset', 0);
+    }, 10000);
+
+    var el = document.getElementById('word14');
+    el.style.opacity = 0;
+
+    var el2 = document.getElementById('word13');
+    el2.style.opacity = 0;
+
+    var el3 = document.getElementById('word12');
+    el3.style.opacity = 0;
+
+    var el4 = document.getElementById('word11');
+    el4.style.opacity = 0;
+
+    var line26 = document.getElementById('line26');
+    setTimeout(function () {
+      line26.setAttribute('stroke-dashoffset', 0);
+    }, 6000);
+
+    var line22 = document.getElementById('line22');
+    setTimeout(function () {
+      line22.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line24 = document.getElementById('line24');
+    setTimeout(function () {
+      line24.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line19 = document.getElementById('line19');
+    setTimeout(function () {
+      line19.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line20 = document.getElementById('line20');
+    setTimeout(function () {
+      line20.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var line21 = document.getElementById('line21');
+    setTimeout(function () {
+      line21.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    var shape10 = document.getElementById('shape10');
+    setTimeout(function () {
+      shape10.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var shape11 = document.getElementById('shape11');
+    setTimeout(function () {
+      shape11.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+
+    var shape12 = document.getElementById('shape12');
+    setTimeout(function () {
+      shape12.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var shape13 = document.getElementById('shape13');
+    shape13.style.stroke = 'black';
+    setTimeout(function () {
+      shape13.setAttribute('stroke-dashoffset', 0);
+    }, 0);
+
+
+    var rear3 = document.getElementById('rear3');
+    setTimeout(function () {
+      rear3.setAttribute('stroke-dashoffset', 900);
+    }, 4000);
+
+    setTimeout(function () {
+      var input_taker14 = arr2[2];
+      document.getElementById('word2').innerHTML = input_taker14;
+      var e = document.getElementById('word2');
+      e.style.opacity = 1;
+    }, 10000);
+
+    setTimeout(function () {
+      var input_taker13 = arr2[0];
+      document.getElementById('word5').innerHTML = input_taker13;
+      var e5 = document.getElementById('word5');
+      e5.style.opacity = 1;
+    }, 10000);
+
+    setTimeout(function () {
+      var input_taker12 = arr2[1];
+      document.getElementById('word6').innerHTML = input_taker12;
+      var e6 = document.getElementById('word6');
+      e6.style.opacity = 1;
+    }, 10000);
+
+
+  }
+  if (count2 == 2){
+
+}
+if (count2 == 3){
+
+}
+if (count2 == 4){
+
+}
+}
+
+
+var countfront = 0;
+var everything = 0;
+var arr = [];
+function pushfront() {
+  countfront++;
+  everything++;
+  var e = document.getElementById('number').value;
+  arr.push (e);
+    if (countfront == 1){
+      var shape = document.getElementById('shape');
+      setTimeout(function () {
+        shape.setAttribute('stroke-dashoffset', 0);
+      }, 0);
+
+      var line = document.getElementById('line');
+      setTimeout(function () {
+        line.setAttribute('stroke-dashoffset', 0);
+      }, 1000);
+
+
+      var shape14 = document.getElementById('shape14');
+      shape14.style.stroke = 'green';
+      setTimeout(function () {
+        shape14.setAttribute('stroke-dashoffset', 0);
+      }, 2000);
+
+      setTimeout(function () {
+        var input_taker = arr[0];
+        document.getElementById('word1').innerHTML = input_taker;
+      }, 3000);
+
+      var front = document.getElementById('front1');
+      setTimeout(function () {
+        front.setAttribute('stroke-dashoffset', 0);
+      }, 4000);
+
+      var line3 = document.getElementById('line3');
+      setTimeout(function () {
+        line3.setAttribute('stroke-dashoffset', 0);
+      }, 5000);
+
+      var shape16 = document.getElementById('shape16');
+      setTimeout(function () {
+        shape16.setAttribute('stroke-dashoffset', 0);
+      }, 6000);
+
+      var line4 = document.getElementById('line4');
+      setTimeout(function () {
+        line4.setAttribute('stroke-dashoffset', 0);
+      }, 7000);
+
+      var line2 = document.getElementById('line2');
+      setTimeout(function () {
+        line2.setAttribute('stroke-dashoffset', 0);
+      }, 8000);
+
+      var shape15 = document.getElementById('shape15');
+      setTimeout(function () {
+        shape15.setAttribute('stroke-dashoffset', 0);
+      }, 9000);
+
+      var line22 = document.getElementById('line22');
+      setTimeout(function () {
+        line22.setAttribute('stroke-dashoffset', 0);
+      }, 10000);
+
+
+
+  }
+  if (countfront == 2 && countback == 1){
+
+    var line4 = document.getElementById('line4');
+    setTimeout(function () {
+      line4.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var word1 = document.getElementById('word1');
+    word1.style.opacity = 0;
+
+    var shape14 = document.getElementById('shape14');
+    shape14.style.stroke = 'black';
+    setTimeout(function () {
+      shape14.setAttribute('stroke-dashoffset', 0);
+    }, 0);
+
+    var front = document.getElementById('front1');
+    setTimeout(function () {
+      front.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var line23 = document.getElementById('line23');
+    setTimeout(function () {
+      line23.setAttribute('stroke-dashoffset', 0);
+    }, 2800);
+
+
+    var line5 = document.getElementById('line5');
+    setTimeout(function () {
+      line5.setAttribute('stroke-dashoffset', 0);
+    }, 3000);
+
+    var line6 = document.getElementById('line6');
+    setTimeout(function () {
+      line6.setAttribute('stroke-dashoffset', 0);
+    }, 4000);
+
+    var line7 = document.getElementById('line7');
+    setTimeout(function () {
+      line7.setAttribute('stroke-dashoffset', 0);
+    }, 5000);
+
+    var shape3 = document.getElementById('shape3');
+    shape3.style.stroke = 'green';
+    setTimeout(function () {
+      shape3.setAttribute('stroke-dashoffset', 0);
+    }, 6000);
+
+    setTimeout(function () {
+      var input_taker2 = arr[1];
+      document.getElementById('word4').innerHTML = input_taker2;
+    }, 7000);
+
+    var front2 = document.getElementById('front2');
+    setTimeout(function () {
+      front2.setAttribute('stroke-dashoffset', 0);
+    }, 8000);
+
+    var shape2 = document.getElementById('shape2');
+    setTimeout(function () {
+      shape2.setAttribute('stroke-dashoffset', 0);
+    }, 9000);
+
+    setTimeout(function () {
+      var input_taker3 = arr[0];
+      document.getElementById('word3').innerHTML = input_taker3;
+    }, 10000);
+
+    var line8 = document.getElementById('line8');
+    setTimeout(function () {
+      line8.setAttribute('stroke-dashoffset', 0);
+    }, 11000);
+
+    var line10 = document.getElementById('line10');
+    setTimeout(function () {
+      line10.setAttribute('stroke-dashoffset', 0);
+    }, 12000);
+
+    var shape9 = document.getElementById('shape9');
+    setTimeout(function () {
+      shape9.setAttribute('stroke-dashoffset', 0);
+    }, 13000);
+
+    var line24 = document.getElementById('line24');
+    setTimeout(function () {
+      line24.setAttribute('stroke-dashoffset', 0);
+    }, 14000);
+
+}
+
+
+if (countfront == 3 && countback == 1){
+
+  var shape3 = document.getElementById('shape3');
+  shape3.style.stroke = 'black';
+  setTimeout(function () {
+    shape3.setAttribute('stroke-dashoffset', 0);
+  }, 0);
+
+  var front2 = document.getElementById('front2');
+  setTimeout(function () {
+    front2.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var line23 = document.getElementById('line23');
+  setTimeout(function () {
+    line23.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var shape14 = document.getElementById('shape14');
+  shape14.style.stroke = 'green';
+  setTimeout(function () {
+    shape14.setAttribute('stroke-dashoffset', 0);
+  }, 3000);
+
+  var front = document.getElementById('front1');
+  setTimeout(function () {
+    front.setAttribute('stroke-dashoffset', 0);
+  }, 3000);
+
+
+
+  setTimeout(function () {
+    var word1 = document.getElementById('word1');
+    var input_taker = arr[2];
+    document.getElementById('word1').innerHTML = input_taker;
+    word1.style.opacity = 1;
+  }, 4500);
+
+
+
+}
+if (countfront == 4 && countback == 2){
+  var shape14 = document.getElementById('shape14');
+  shape14.style.stroke = 'black';
+  setTimeout(function () {
+    shape14.setAttribute('stroke-dashoffset', 0);
+  }, 0);
+
+  var word1 = document.getElementById('word1');
+  word1.style.opacity = 0;
+
+  var front = document.getElementById('front1');
+  setTimeout(function () {
+    front.setAttribute('stroke-dashoffset', 900);
+  }, 1500);
+
+  var line23 = document.getElementById('line23');
+  setTimeout(function () {
+    line23.setAttribute('stroke-dashoffset', 0);
+  }, 2000);
+
+  var word3 = document.getElementById('word3');
+  word3.style.opacity = 0;
+
+  var word4 = document.getElementById('word4');
+  word4.style.opacity = 0;
+
+
+  var line7 = document.getElementById('line7');
+  setTimeout(function () {
+    line7.setAttribute('stroke-dashoffset', 900);
+  }, 3000);
+
+  var shape2 = document.getElementById('shape2');
+  setTimeout(function () {
+    shape2.setAttribute('stroke-dashoffset', 900);
+  }, 4000);
+
+  var line25 = document.getElementById('line25');
+  setTimeout(function () {
+    line25.setAttribute('stroke-dashoffset', 0);
+  }, 7000);
+
+  var line11 = document.getElementById('line11');
+  setTimeout(function () {
+    line11.setAttribute('stroke-dashoffset', 0);
+  }, 8000);
+
+  var shape17 = document.getElementById('shape17');
+  setTimeout(function () {
+    shape17.setAttribute('stroke-dashoffset', 0);
+  }, 9000);
+
+  var line12 = document.getElementById('line12');
+  setTimeout(function () {
+    line12.setAttribute('stroke-dashoffset', 0);
+  }, 10000);
+
+  var line13 = document.getElementById('line13');
+  setTimeout(function () {
+    line13.setAttribute('stroke-dashoffset', 0);
+  }, 11000);
+
+  var line14 = document.getElementById('line14');
+  setTimeout(function () {
+    line14.setAttribute('stroke-dashoffset', 0);
+  }, 12000);
+
+  var line15 = document.getElementById('line15');
+  setTimeout(function () {
+    line15.setAttribute('stroke-dashoffset', 0);
+  }, 13000);
+
+  var line16 = document.getElementById('line16');
+  setTimeout(function () {
+    line16.setAttribute('stroke-dashoffset', 0);
+  }, 14000);
+
+  var shape4 = document.getElementById('shape4');
+  setTimeout(function () {
+    shape4.setAttribute('stroke-dashoffset', 0);
+  }, 20000);
+
+
+  var shape5 = document.getElementById('shape5');
+  setTimeout(function () {
+    shape5.setAttribute('stroke-dashoffset', 0);
+  }, 22000);
+
+
+  var shape6 = document.getElementById('shape6');
+  setTimeout(function () {
+    shape6.setAttribute('stroke-dashoffset', 0);
+  }, 18000);
+
+  var shape7 = document.getElementById('shape7');
+  shape7.style.stroke = 'green';
+  setTimeout(function () {
+    shape7.setAttribute('stroke-dashoffset', 0);
+  }, 15000);
+
+  setTimeout(function () {
+    var input_taker7 = arr[3];
+    document.getElementById('word7').innerHTML = input_taker7;
+  }, 16000);
+
+  var front3 = document.getElementById('front3');
+  setTimeout(function () {
+    front3.setAttribute('stroke-dashoffset', 0);
+  }, 17000);
+
+  setTimeout(function () {
+    var input_taker8 = arr[2];
+    document.getElementById('word8').innerHTML = input_taker8;
+  }, 19000);
+
+  setTimeout(function () {
+    var input_taker9 = arr[1];
+    document.getElementById('word9').innerHTML = input_taker9;
+  }, 21000);
+
+  setTimeout(function () {
+    var input_taker10 = arr[0];
+    document.getElementById('word10').innerHTML = input_taker10;
+  }, 23000);
+
+  var line17 = document.getElementById('line17');
+  setTimeout(function () {
+    line17.setAttribute('stroke-dashoffset', 0);
+  }, 24000);
+
+  var line18 = document.getElementById('line18');
+  setTimeout(function () {
+    line18.setAttribute('stroke-dashoffset', 0);
+  }, 25000);
+
+  var shape13 = document.getElementById('shape13');
+  setTimeout(function () {
+    shape13.setAttribute('stroke-dashoffset', 0);
+  }, 26000);
+
+  var line26 = document.getElementById('line26');
+  setTimeout(function () {
+    line26.setAttribute('stroke-dashoffset', 0);
+  }, 27000);
+
+}
+}
+
+
+var countback = 0;
+var everything = 0;
+var arr2 = [];
+  function pushback() {
+    countback++;
+    everything++;
+    var e = document.getElementById('number').value;
+    arr2.push (e);
+    if (countback == 1){
+
+      var shape15 = document.getElementById('shape15');
+      shape15.style.stroke = 'red';
+      setTimeout(function () {
+        shape15.setAttribute('stroke-dashoffset', 0);
+      }, 0);
+
+      var line22 = document.getElementById('line22');
+      setTimeout(function () {
+        line22.setAttribute('stroke-dashoffset', 900);
+      }, 0);
+
+
+      setTimeout(function () {
+        var input_taker2 = arr2[0];
+        document.getElementById('word2').innerHTML = input_taker2;
+      }, 4200);
+
+      var rear = document.getElementById('rear1');
+      setTimeout(function () {
+        rear.setAttribute('stroke-dashoffset', 0);
+      }, 5000);
+    }
+    if (countback == 2 && countfront == 3){
+
+
+      var shape15 = document.getElementById('shape15');
+      shape15.style.stroke = 'black';
+      setTimeout(function () {
+        shape15.setAttribute('stroke-dashoffset', 0);
+      }, 0);
+
+      var rear = document.getElementById('rear1');
+      setTimeout(function () {
+        rear.setAttribute('stroke-dashoffset', 900);
+      }, 0);
+
+
+
+      var line22 = document.getElementById('line22');
+      setTimeout(function () {
+        line22.setAttribute('stroke-dashoffset', 0);
+      }, 2000);
+
+      var word2 = document.getElementById('word2');
+      word2.style.opacity = 0;
+
+      var line24 = document.getElementById('line24');
+      setTimeout(function () {
+        line24.setAttribute('stroke-dashoffset', 900);
+      }, 2000);
+
+      var shape9 = document.getElementById('shape9');
+      shape9.style.stroke = 'red';
+      setTimeout(function () {
+        shape9.setAttribute('stroke-dashoffset', 0);
+      }, 6000);
+
+      setTimeout(function () {
+        var input_taker4 = arr2[1];
+        document.getElementById('word6').innerHTML = input_taker4;
+      }, 6500);
+
+      var rear2 = document.getElementById('rear2');
+      setTimeout(function () {
+        rear2.setAttribute('stroke-dashoffset', 0);
+      }, 7000);
+
+      var line9 = document.getElementById('line9');
+      setTimeout(function () {
+        line9.setAttribute('stroke-dashoffset', 0);
+      }, 8000);
+
+      var shape8 = document.getElementById('shape8');
+      setTimeout(function () {
+        shape8.setAttribute('stroke-dashoffset', 0);
+      }, 9000);
+
+      setTimeout(function () {
+        var input_taker3 = arr2[0];
+        document.getElementById('word5').innerHTML = input_taker3;
+      }, 10000);
+
+
+  }
+  if (countback == 3 && countfront == 4){
+
+    var shape9 = document.getElementById('shape9');
+    shape9.style.stroke = 'black';
+    setTimeout(function () {
+      shape9.setAttribute('stroke-dashoffset', 0);
+    }, 0);
+
+    var rear2 = document.getElementById('rear2');
+    setTimeout(function () {
+      rear2.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+    var line22 = document.getElementById('line22');
+    setTimeout(function () {
+      line22.setAttribute('stroke-dashoffset', 900);
+    }, 0);
+
+
+    var shape15 = document.getElementById('shape15');
+    shape15.style.stroke = 'red';
+    setTimeout(function () {
+      shape15.setAttribute('stroke-dashoffset', 0);
+    }, 1000);
+
+    setTimeout(function () {
+      var input_taker2 = arr2[2];
+      document.getElementById('word2').innerHTML = input_taker2;
+      var el = document.getElementById('word2');
+      el.style.opacity = 1;
+    }, 4000);
+
+    var rear = document.getElementById('rear1');
+    setTimeout(function () {
+      rear.setAttribute('stroke-dashoffset', 0);
+    }, 3000);
+
+}
+if (countback == 4 && countfront == 4){
+  var shape15 = document.getElementById('shape15');
+  shape15.style.stroke = 'black';
+  setTimeout(function () {
+    shape15.setAttribute('stroke-dashoffset', 0);
+  }, 0);
+
+  var rear = document.getElementById('rear1');
+  setTimeout(function () {
+    rear.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var line9 = document.getElementById('line9');
+  setTimeout(function () {
+    line9.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var shape8 = document.getElementById('shape8');
+  setTimeout(function () {
+    shape8.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var el = document.getElementById('word2');
+  el.style.opacity = 0;
+
+  var el2 = document.getElementById('word5');
+  el2.style.opacity = 0;
+
+  var el3 = document.getElementById('word6');
+  el3.style.opacity = 0;
+
+  var line26 = document.getElementById('line26');
+  setTimeout(function () {
+    line26.setAttribute('stroke-dashoffset', 900);
+  }, 0);
+
+  var line22 = document.getElementById('line22');
+  setTimeout(function () {
+    line22.setAttribute('stroke-dashoffset', 0);
+  }, 2000);
+
+  var line24 = document.getElementById('line24');
+  setTimeout(function () {
+    line24.setAttribute('stroke-dashoffset', 0);
+  }, 2000);
+
+  var line19 = document.getElementById('line19');
+  setTimeout(function () {
+    line19.setAttribute('stroke-dashoffset', 0);
+  }, 6000);
+
+  var line20 = document.getElementById('line20');
+  setTimeout(function () {
+    line20.setAttribute('stroke-dashoffset', 0);
+  }, 7000);
+
+  var line21 = document.getElementById('line21');
+  setTimeout(function () {
+    line21.setAttribute('stroke-dashoffset', 0);
+  }, 8000);
+
+  var shape10 = document.getElementById('shape10');
+  setTimeout(function () {
+    shape10.setAttribute('stroke-dashoffset', 0);
+  }, 13000);
+
+  var shape11 = document.getElementById('shape11');
+  setTimeout(function () {
+    shape11.setAttribute('stroke-dashoffset', 0);
+  }, 11000);
+
+
+  var shape12 = document.getElementById('shape12');
+  setTimeout(function () {
+    shape12.setAttribute('stroke-dashoffset', 0);
+  }, 9000);
+
+  var shape13 = document.getElementById('shape13');
+  shape13.style.stroke = 'red';
+  setTimeout(function () {
+    shape13.setAttribute('stroke-dashoffset', 0);
+  }, 3000);
+
+  setTimeout(function () {
+    var input_taker11 = arr2[0];
+    document.getElementById('word11').innerHTML = input_taker11;
+  }, 14000);
+
+  setTimeout(function () {
+    var input_taker12 = arr2[1];
+    document.getElementById('word12').innerHTML = input_taker12;
+  }, 12000);
+
+  setTimeout(function () {
+    var input_taker13 = arr2[2];
+    document.getElementById('word13').innerHTML = input_taker13;
+  }, 10000);
+
+  setTimeout(function () {
+    var input_taker14 = arr2[3];
+    document.getElementById('word14').innerHTML = input_taker14;
+  }, 4000);
+
+  var rear3 = document.getElementById('rear3');
+  setTimeout(function () {
+    rear3.setAttribute('stroke-dashoffset', 0);
+  }, 5000);
+
+
+
+}
+}
+
+
+
+</script>
+
+</body>
+</html>
